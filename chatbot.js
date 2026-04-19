@@ -109,7 +109,15 @@
             }
             
             const data = await response.json();
-            return data.candidates[0].content.parts[0].text;
+            // Check if the Gemini API returned expected content or if it was blocked by safety settings
+            if (data.candidates && data.candidates.length > 0) {
+                return data.candidates[0].content.parts[0].text;
+            } else if (data.promptFeedback) {
+                console.warn("Prompt blocked by safety settings:", data.promptFeedback);
+                return "I apologize, but I cannot respond to that message.";
+            } else {
+                throw new Error("Unexpected API response: " + JSON.stringify(data));
+            }
         } catch (error) {
             console.error("Chatbot AI Error:", error);
             
