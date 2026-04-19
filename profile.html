@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | MD Care Hospital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() { emailjs.init("lT18BxqA4wgJ-8RuJ"); })();
+    </script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { primary: '#0d9488', secondary: '#1e293b' } } }
+        }
+    </script>
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0 left-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition cursor-pointer">
+                    <i class="fa-solid fa-house-medical text-3xl text-primary"></i>
+                    <span class="font-bold text-2xl text-secondary">MD Care <span class="text-primary">Hospital</span></span>
+                </a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-primary transition font-medium">Home</a>
+                    <a href="departments.html" class="text-slate-600 hover:text-primary transition font-medium">Departments</a>
+                    <a href="services.html" class="text-slate-600 hover:text-primary transition font-medium">Services</a>
+                    <a href="doctors.html" class="text-slate-600 hover:text-primary transition font-medium">Doctors</a>
+                    <div class="border-l border-gray-300 h-6 mx-2 hidden lg:block"></div>
+                    <button onclick="logout()" class="text-red-500 hover:text-red-700 font-bold transition">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Headr -->
+    <div class="pt-28 pb-10 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-6">
+            <div id="user-initial" class="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary text-3xl font-bold shadow-lg border-4 border-teal-600">U</div>
+            <div>
+                <h1 class="text-3xl font-bold text-white">Welcome back, <span id="user-name">Loading...</span>!</h1>
+                <p class="text-teal-100 mt-1"><i class="fa-solid fa-envelope mr-1"></i> <span id="user-email">Loading...</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Contnt -->
+    <section class="py-12 bg-slate-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Quick Actions Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+                    <h3 class="font-bold text-secondary text-lg mb-4 border-b pb-2">Quick Actions</h3>
+                    <a href="index.html#appointment" class="w-full block text-center bg-primary text-white px-4 py-3 rounded-lg font-bold hover:bg-teal-700 transition shadow-md mb-3"><i class="fa-solid fa-calendar-plus mr-2"></i> Book New Appointment</a>
+                    <a href="services.html" class="w-full block text-center bg-slate-100 text-slate-700 px-4 py-3 rounded-lg font-bold hover:bg-slate-200 transition"><i class="fa-solid fa-stethoscope mr-2"></i> Browse Treatments</a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div>
+                    <h2 class="text-2xl font-bold text-secondary mb-4 flex items-center"><i class="fa-solid fa-calendar-check text-primary mr-3"></i> Upcoming Appointments</h2>
+                    <div id="appointments-list" class="space-y-4">
+                        <p class="text-slate-500">Loading your appointments...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWp-8CEFAr2cSrcSHEZu7jnaUWUU9DHtY",
+            authDomain: "md-care-hospital.firebaseapp.com",
+            projectId: "md-care-hospital",
+            storageBucket: "md-care-hospital.firebasestorage.app",
+            messagingSenderId: "214966558089",
+            appId: "1:214966558089:web:d49f400adb427614089558",
+            measurementId: "G-K3S90QH9LT"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        window.logout = function() {
+            signOut(auth).then(() => {
+                localStorage.removeItem('mdcare_auth');
+                window.location.href = 'index.html';
+            });
+        }
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const displayName = user.displayName || "Patient";
+            document.getElementById('user-name').textContent = displayName;
+            document.getElementById('user-email').textContent = user.email;
+            document.getElementById('user-initial').textContent = displayName.charAt(0).toUpperCase();
+
+            window.loadUserAppointments();
+        });
+
+        window.loadUserAppointments = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            
+            const list = document.getElementById('appointments-list');
+            list.innerHTML = '<p class="text-slate-500">Loading your appointments...</p>';
+            
+            try {
+                const q = query(collection(db, "appointments"), where("userId", "==", user.uid));
+                const snapshot = await getDocs(q);
+                
+                if (snapshot.empty) {
+                    list.innerHTML = '<p class="text-slate-500">You have no upcoming appointments.</p>';
+                    return;
+                }
+
+                list.innerHTML = '';
+                snapshot.forEach((documentSnapshot) => {
+                    const data = documentSnapshot.data();
+                    const id = documentSnapshot.id;
+                    const currentStatus = data.status || "Pending";
+                    let statusClass = "bg-yellow-100 text-yellow-800"; // Pending color
+                    if (currentStatus === "Confirmed") {
+                        statusClass = "bg-teal-100 text-teal-800";
+                    } else if (currentStatus === "Cancelled") {
+                        statusClass = "bg-red-100 text-red-800";
+                    }
+                    
+                    const cancelButton = currentStatus !== 'Cancelled' 
+                        ? `<button onclick="window.cancelAppointment('${id}')" class="text-red-500 font-bold border border-red-200 px-4 py-2 rounded-lg hover:bg-red-50 transition text-sm text-center mt-2">Cancel</button>` 
+                        : '';
+                    
+                    list.innerHTML += `
+                        <div class="bg-white rounded-2xl shadow-sm border border-l-4 border-l-primary border-slate-100 p-6 flex flex-col md:flex-row justify-between md:items-center gap-4 hover:shadow-md transition">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="${statusClass} text-xs font-bold px-2 py-1 rounded uppercase tracking-wide">${currentStatus}</span>
+                                    <span class="text-slate-500 text-sm font-medium">${data.department}</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-secondary">Consultation with ${data.doctor}</h3>
+                                <p class="text-slate-600 mt-1"><i class="fa-regular fa-calendar mr-2"></i> ${data.date}</p>
+                                <p class="text-slate-600"><i class="fa-regular fa-clock mr-2"></i> ${data.time}</p>
+                            </div>
+                            <div class="flex flex-col gap-2 min-w-[120px]">
+                                <span class="bg-slate-100 text-slate-600 px-4 py-2 rounded-lg text-sm text-center font-bold">${currentStatus === 'Pending' ? 'Awaiting Action' : 'Processed'}</span>
+                                ${cancelButton}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                list.innerHTML = '<p class="text-red-500">Error loading appointments.</p>';
+                console.error(err);
+            }
+        };
+
+        window.cancelAppointment = async function(id) {
+            if(confirm("Are you sure you want to cancel this appointment?")) {
+                try {
+                    await updateDoc(doc(db, "appointments", id), { status: "Cancelled" });
+                
+                // Notify Admin via email
+                const user = auth.currentUser;
+                await emailjs.send("service_7o9hcwe", "template_g3n5r4f", {
+                    to_email: "thenish9997@gmail.com",
+                    subject: "Appointment Cancelled by Patient - MD Care",
+                    html_message: `
+                    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 900px; margin: 0 auto; background-color: #f8fafc; padding: 30px; border-radius: 16px;">
+                        <div style="background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+                            <div style="background-color: #1e293b; padding: 40px 20px; text-align: center; border-bottom: 6px solid #ef4444;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 36px; font-weight: 800; letter-spacing: 0.5px;">MD Care <span style="color: #0d9488;">Admin Alerts</span></h1>
+                            </div>
+                            <div style="padding: 50px 40px; color: #334155; line-height: 1.8; font-size: 18px;">
+                                <div style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0;">
+                                    <h3 style="margin: 0 0 5px 0; color: #991b1b;">Appointment Cancelled</h3>
+                                    <p style="margin: 0; color: #7f1d1d; font-size: 16px;">A patient has just cancelled their upcoming appointment.</p>
+                                </div>
+                                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                                    <tr>
+                                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b; width: 40%;">Patient Name:</td>
+                                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 600;">${user.displayName || "Patient"}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #64748b;">Patient Email:</td>
+                                        <td style="padding: 10px 0; border-bottom: 1px solid #e2e8f0; color: #0f172a; font-weight: 600;">${user.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 10px 0; color: #64748b;">Appointment ID:</td>
+                                        <td style="padding: 10px 0; color: #0f172a; font-family: monospace; font-size: 16px;">${id}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="background-color: #f1f5f9; padding: 25px; text-align: center; border-top: 1px solid #e2e8f0;">
+                                <p style="margin: 0; color: #64748b; font-size: 15px;">This is an automated message from the MD Care Patient Portal.</p>
+                            </div>
+                        </div>
+                    </div>`
+                });
+
+                    window.loadUserAppointments(); // Refresh the list automatically
+                } catch (err) {
+                    alert("Error cancelling appointment: " + err.message);
+                }
+            }
+        };
+    </script>
+<script src="chatbot.js"></script>
+</body>
+</html>

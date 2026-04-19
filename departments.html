@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments | MD Care Hospital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { primary: '#0d9488', secondary: '#1e293b' } } }
+        }
+    </script>
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0 left-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition cursor-pointer">
+                    <i class="fa-solid fa-house-medical text-3xl text-primary"></i>
+                    <span class="font-bold text-2xl text-secondary">MD Care <span class="text-primary">Hospital</span></span>
+                </a>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-primary transition font-medium">Home</a>
+                    <a href="about.html" class="text-slate-600 hover:text-primary transition font-medium">About</a>
+                    <a href="departments.html" class="text-primary transition font-bold">Departments</a>
+                    <a href="services.html" class="text-slate-600 hover:text-primary transition font-medium">Services</a>
+                    <a href="doctors.html" class="text-slate-600 hover:text-primary transition font-medium">Doctors</a>
+                    <a href="index.html#appointment" class="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-teal-700 transition shadow-lg shadow-teal-500/30">Book Appointment</a>
+                    
+                    <!-- Auth Buttons -->
+                    <div class="border-l border-gray-300 h-6 mx-2 hidden lg:block"></div>
+                    <div id="auth-nav-container" class="flex items-center space-x-4">
+                    </div>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <a href="index.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Home</a>
+                <a href="about.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">About</a>
+                <a href="departments.html" class="block px-3 py-2 text-primary font-bold hover:bg-slate-50 rounded-md">Departments</a>
+                <a href="services.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Services</a>
+                <a href="doctors.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Doctors</a>
+                <a href="index.html#appointment" class="block px-3 py-2 text-primary font-bold hover:bg-slate-50 rounded-md">Book Appointment</a>
+                <div id="mobile-auth-container" class="border-t border-gray-200 mt-2 pt-2 flex flex-col">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Departments -->
+    <section class="pt-32 pb-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h4 class="text-primary font-semibold uppercase tracking-wide mb-2">Our Departments</h4>
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4">Comprehensive Medical Services</h2>
+                <p class="text-slate-600">Explore our wide range of fully-equipped departments focused on distinct areas of your well-being.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-heart-pulse text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Cardiology</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Comprehensive heart care, advanced diagnostics, and surgical interventions.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-brain text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Neurology</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Expert treatment for disorders of the nervous system and complex brain care.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-bone text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Orthopedics</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Specialized care for bones, joints, ligaments, tendons, and muscular tissues.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-baby text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Pediatrics</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Dedicated and compassionate medical care for infants, children, and teenagers.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-ribbon text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Oncology</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Advanced cancer care, expert tumor diagnosis, and life-saving treatments.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-microscope text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Dermatology</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Professional skin treatments, cosmetic dermatology, and chronic skin disease management.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-eye text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Ophthalmology</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Comprehensive eye tests, corrective surgeries, and complete vision care.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-slate-100 group flex flex-col">
+                    <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition"><i class="fa-solid fa-head-side-virus text-3xl text-primary group-hover:text-white transition"></i></div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Psychiatry</h3>
+                    <p class="text-slate-500 text-sm flex-grow">Clinical mental health counseling, behavioral support, and psychiatric treatments.</p><a href="services.html" class="mt-4 text-primary font-bold hover:underline text-sm">View Treatments <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer vieww -->
+    <footer class="bg-secondary text-white pt-16 pb-8 border-t-4 border-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <div class="flex items-center gap-2 mb-6"><i class="fa-solid fa-house-medical text-3xl text-primary"></i><span class="font-bold text-2xl">MD Care <span class="text-primary">Hospital</span></span></div>
+                    <p class="text-gray-400 mb-6">Providing exceptional medical care to our community with compassion, integrity, and advanced medical expertise.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-white border-b-2 border-primary pb-2 inline-block">Quick Links</h3>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><a href="index.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Home</a></li>
+                        <li><a href="about.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> About Us</a></li>
+                        <li><a href="departments.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Departments</a></li>
+                        <li><a href="doctors.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Doctors</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-white border-b-2 border-primary pb-2 inline-block">Contact Info</h3>
+                    <ul class="space-y-4 text-gray-400">
+                        <li class="flex items-start"><i class="fa-solid fa-location-dot mt-1 mr-3 text-primary"></i><span>Basti DanishManda<br/>Jalandhar</span></li>
+                        <li class="flex items-center"><i class="fa-solid fa-phone mr-3 text-primary"></i><span>8091919997</span></li>
+                        <li class="flex items-center"><i class="fa-solid fa-envelope mr-3 text-primary"></i><span>thenish9997@gmail.com</span></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-6 text-white border-b-2 border-primary pb-2 inline-block">Follow Us</h3>
+                    <p class="text-gray-400 mb-4">Stay updated with our latest health tips and news.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/danish_sheikhz?igsh=YWtxdTRnNHVmdXN1" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition text-xl"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/918091919997" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-primary transition text-xl"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2024 MD Care Hospital (MD Hospitals). All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let isLoggedIn = localStorage.getItem('mdcare_auth') === 'true';
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        function updateAuthUI() {
+            const desktopAuth = document.getElementById('auth-nav-container');
+            const mobileAuth = document.getElementById('mobile-auth-container');
+            if(isLoggedIn) {
+                if(desktopAuth) desktopAuth.innerHTML = `<div class="flex items-center gap-3"><a href="profile.html" class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold shadow-md hover:bg-teal-700 transition">U</a><a href="profile.html" class="text-slate-700 font-bold hover:text-primary transition">Dashboard</a><button onclick="logout()" class="text-sm font-bold text-slate-500 hover:text-red-500 transition border-l border-gray-300 pl-3 ml-1">Logout</button></div>`;
+                if(mobileAuth) mobileAuth.innerHTML = `<a href="profile.html" class="block w-full text-left px-3 py-2 text-secondary font-bold hover:bg-slate-50 rounded-md">Dashboard</a><button onclick="logout()" class="block w-full text-left px-3 py-2 text-red-500 font-bold hover:bg-slate-50 rounded-md">Logout</button>`;
+            } else {
+                if(desktopAuth) desktopAuth.innerHTML = `<a href="index.html" class="text-slate-600 hover:text-primary transition font-medium">Login</a><a href="index.html" class="bg-secondary text-white px-4 py-2 rounded-lg font-medium hover:bg-slate-800 transition">Register</a>`;
+                if(mobileAuth) mobileAuth.innerHTML = `<a href="index.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md text-left">Login</a><a href="index.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md text-left">Register</a>`;
+            }
+        }
+        function logout() { localStorage.removeItem('mdcare_auth'); isLoggedIn = false; updateAuthUI(); }
+        updateAuthUI();
+    </script>
+<script src="chatbot.js"></script>
+</body>
+</html>
