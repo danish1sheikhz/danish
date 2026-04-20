@@ -11,6 +11,7 @@
     <script type="text/javascript">
         (function() { emailjs.init("lT18BxqA4wgJ-8RuJ"); })();
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         tailwind.config = {
             theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { primary: '#0d9488', secondary: '#1e293b' } } }
@@ -95,6 +96,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        window.userAppointmentsMap = {};
+
         window.logout = function() {
             signOut(auth).then(() => {
                 localStorage.removeItem('mdcare_auth');
@@ -122,6 +125,8 @@
             
             const list = document.getElementById('appointments-list');
             list.innerHTML = '<p class="text-slate-500">Loading your appointments...</p>';
+
+            window.userAppointmentsMap = {};
             
             try {
                 const q = query(collection(db, "appointments"), where("userId", "==", user.uid));
@@ -136,6 +141,25 @@
                 snapshot.forEach((documentSnapshot) => {
                     const data = documentSnapshot.data();
                     const id = documentSnapshot.id;
+
+                    // Generate 12-digit mathematical reference from Date and Time
+                    let refNumber = id;
+                    if (data.date && data.time) {
+                        try {
+                            const dStr = data.date.replace(/-/g, ''); // YYYYMMDD
+                            const [tStr, mod] = data.time.split(' ');
+                            let [hr, mn] = tStr.split(':');
+                            let hrNum = parseInt(hr, 10);
+                            if (mod === 'PM' && hrNum !== 12) hrNum += 12;
+                            if (mod === 'AM' && hrNum === 12) hrNum = 0;
+                            refNumber = dStr + hrNum.toString().padStart(2, '0') + mn;
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                    data.refNumber = refNumber;
+                    window.userAppointmentsMap[id] = data;
+
                     const currentStatus = data.status || "Pending";
                     let statusClass = "bg-yellow-100 text-yellow-800"; // Pending color
                     if (currentStatus === "Confirmed") {
@@ -144,9 +168,13 @@
                         statusClass = "bg-red-100 text-red-800";
                     }
                     
-                    const cancelButton = currentStatus !== 'Cancelled' 
-                        ? `<button onclick="window.cancelAppointment('${id}')" class="text-red-500 font-bold border border-red-200 px-4 py-2 rounded-lg hover:bg-red-50 transition text-sm text-center mt-2">Cancel</button>` 
-                        : '';
+                    let actionButtons = '';
+                    if (currentStatus === 'Confirmed') {
+                        actionButtons += `<button onclick="window.downloadReceipt('${id}')" class="bg-primary text-white font-bold border border-primary px-4 py-2 rounded-lg hover:bg-teal-700 transition text-sm text-center mt-2 flex items-center justify-center gap-1 shadow-sm"><i class="fa-solid fa-file-pdf"></i> Receipt</button>`;
+                    }
+                    if (currentStatus !== 'Cancelled') {
+                        actionButtons += `<button onclick="window.cancelAppointment('${id}')" class="text-red-500 font-bold border border-red-200 px-4 py-2 rounded-lg hover:bg-red-50 transition text-sm text-center mt-2">Cancel</button>`;
+                    }
                     
                     list.innerHTML += `
                         <div class="bg-white rounded-2xl shadow-sm border border-l-4 border-l-primary border-slate-100 p-6 flex flex-col md:flex-row justify-between md:items-center gap-4 hover:shadow-md transition">
@@ -156,12 +184,13 @@
                                     <span class="text-slate-500 text-sm font-medium">${data.department}</span>
                                 </div>
                                 <h3 class="text-xl font-bold text-secondary">Consultation with ${data.doctor}</h3>
-                                <p class="text-slate-600 mt-1"><i class="fa-regular fa-calendar mr-2"></i> ${data.date}</p>
+                                <p class="text-slate-600 mt-2 text-sm"><span class="font-bold text-slate-700">Ref:</span> <span class="font-mono bg-slate-100 px-2 py-0.5 rounded border border-slate-200 text-primary">${refNumber}</span></p>
+                                <p class="text-slate-600 mt-2"><i class="fa-regular fa-calendar mr-2"></i> ${data.date}</p>
                                 <p class="text-slate-600"><i class="fa-regular fa-clock mr-2"></i> ${data.time}</p>
                             </div>
                             <div class="flex flex-col gap-2 min-w-[120px]">
                                 <span class="bg-slate-100 text-slate-600 px-4 py-2 rounded-lg text-sm text-center font-bold">${currentStatus === 'Pending' ? 'Awaiting Action' : 'Processed'}</span>
-                                ${cancelButton}
+                                ${actionButtons}
                             </div>
                         </div>
                     `;
@@ -170,6 +199,95 @@
                 list.innerHTML = '<p class="text-red-500">Error loading appointments.</p>';
                 console.error(err);
             }
+        };
+
+        window.downloadReceipt = async function(id) {
+            const data = window.userAppointmentsMap[id];
+            if (!data) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Load logo image (Save your logo as 'logo.png' inside the 'images' folder)
+            const logoImg = await new Promise((resolve) => {
+                const img = new Image();
+                // If using an external web URL, uncomment the line below to prevent CORS issues
+                // img.crossOrigin = "Anonymous";
+                img.src = "images/logo1.png"; 
+                img.onload = () => resolve(img);
+                img.onerror = () => resolve(null); // Gracefully skips if no logo is found
+            });
+
+            // Header Background
+            doc.setFillColor(13, 148, 136); // Primary Color
+            doc.rect(0, 0, 210, 45, 'F');
+            
+            if (logoImg) {
+                // Add Logo at (x: 15, y: 12) with (width: 20, height: 20)
+                doc.addImage(logoImg, 'PNG', 15, 12, 20, 20);
+            }
+
+            // Header Text
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont("helvetica", "bold");
+            doc.text("MD Care Hospital", 105, 18, null, null, "center");
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.text("Basti DanishManda Jalandhar | Contact: 8091919997", 105, 26, null, null, "center");
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("Confirmed Booking Receipt", 105, 36, null, null, "center");
+
+            // Content Title
+            let startY = 65;
+            doc.setTextColor(13, 148, 136);
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.text("Appointment Details", 20, startY);
+            
+            // Divider Line
+            doc.setDrawColor(220, 220, 220);
+            doc.line(20, startY + 3, 190, startY + 3);
+
+            // Details
+            startY += 15;
+            doc.setTextColor(50, 50, 50);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            
+            const lineSpacing = 10;
+            const leftCol = 20;
+            const rightCol = 60;
+
+            const addRow = (label, value, isStatus = false) => {
+                doc.setFont("helvetica", "bold");
+                doc.text(label, leftCol, startY);
+                doc.setFont("helvetica", "normal");
+                if (isStatus) doc.setTextColor(13, 148, 136); // Green text for status
+                doc.text(value, rightCol, startY);
+                if (isStatus) doc.setTextColor(50, 50, 50); // Reset color
+                startY += lineSpacing;
+            };
+
+            let refNumber = data.refNumber || id;
+
+            addRow("Booking Ref:", refNumber);
+            addRow("Patient Name:", data.patientName || document.getElementById('user-name').textContent);
+            addRow("Department:", data.department);
+            addRow("Doctor:", data.doctor);
+            addRow("Date:", data.date);
+            addRow("Time:", data.time);
+            addRow("Status:", data.status, true);
+
+            // Footer
+            doc.setTextColor(150, 150, 150);
+            doc.setFontSize(10);
+            doc.text("Thank you for choosing MD Care Hospital.", 105, 270, null, null, "center");
+            doc.text("Basti DanishManda Jalandhar | Contact: 8091919997", 105, 276, null, null, "center");
+
+            // Trigger Download
+            doc.save(`MDCare_Receipt_${refNumber}.pdf`);
         };
 
         window.cancelAppointment = async function(id) {

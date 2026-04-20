@@ -11,6 +11,7 @@
     <script type="text/javascript">
         (function() { emailjs.init("lT18BxqA4wgJ-8RuJ"); })();
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         tailwind.config = {
             theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'] }, colors: { primary: '#0d9488', secondary: '#1e293b' } } }
@@ -77,7 +78,8 @@
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-700 mb-1">Phone Number</label>
-                            <input type="tel" id="add-phone" required class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-primary outline-none text-sm">
+                            <input type="tel" id="add-phone" required pattern="[0-9]{10}" title="Phone number must be exactly 10 digits" class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-primary outline-none text-sm">
+                            <div id="admin-phone-error" class="text-xs font-bold mt-1 text-red-500 hidden"><i class="fa-solid fa-circle-xmark mr-1"></i> Must be exactly 10 digits</div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-slate-700 mb-1">Department</label>
@@ -109,13 +111,25 @@
                                 <select id="add-time" required class="w-full px-3 py-2 rounded-lg border border-gray-300 focus:ring-1 focus:ring-primary outline-none text-sm bg-white">
                                     <option value="" disabled selected>Time</option>
                                     <option value="09:00 AM">09:00 AM</option>
+                                    <option value="09:30 AM">09:30 AM</option>
                                     <option value="10:00 AM">10:00 AM</option>
+                                    <option value="10:30 AM">10:30 AM</option>
+                                    <option value="11:00 AM">11:00 AM</option>
                                     <option value="11:30 AM">11:30 AM</option>
+                                    <option value="12:00 PM">12:00 PM</option>
+                                    <option value="12:30 PM">12:30 PM</option>
+                                    <option value="01:00 PM">01:00 PM</option>
+                                    <option value="01:30 PM">01:30 PM</option>
                                     <option value="02:00 PM">02:00 PM</option>
+                                    <option value="02:30 PM">02:30 PM</option>
+                                    <option value="03:00 PM">03:00 PM</option>
+                                    <option value="03:30 PM">03:30 PM</option>
                                     <option value="04:00 PM">04:00 PM</option>
+                                    <option value="04:30 PM">04:30 PM</option>
                                 </select>
                             </div>
                         </div>
+                        <div id="admin-availability-message" class="text-xs font-bold mt-1"></div>
                         <button type="submit" class="w-full bg-primary text-white font-bold py-2.5 rounded-lg hover:bg-teal-700 transition shadow text-sm mt-2">
                             Add Booking
                         </button>
@@ -126,9 +140,43 @@
             <!-- All Bookings Table -->
             <div class="lg:col-span-2">
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-                        <h2 class="text-xl font-bold text-secondary"><i class="fa-solid fa-list-check text-primary mr-2"></i> All Bookings</h2>
-                        <button onclick="loadAppointments()" class="text-sm font-bold text-primary hover:text-teal-700 transition"><i class="fa-solid fa-rotate-right mr-1"></i> Refresh</button>
+                    <div class="p-6 border-b border-slate-200 bg-slate-50">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-bold text-secondary flex items-center flex-wrap gap-2">
+                                <span><i class="fa-solid fa-list-check text-primary mr-2"></i> All Bookings</span>
+                                <div class="flex gap-2 ml-2">
+                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2 py-1 rounded border border-slate-200">Total: <span id="bookings-count">0</span></span>
+                                    <span class="bg-teal-50 text-teal-700 text-xs font-bold px-2 py-1 rounded border border-teal-200">Confirmed: <span id="confirmed-count">0</span></span>
+                                    <span class="bg-yellow-50 text-yellow-700 text-xs font-bold px-2 py-1 rounded border border-yellow-200">Pending: <span id="pending-count">0</span></span>
+                                </div>
+                            </h2>
+                            <div class="flex gap-3">
+                                <button onclick="exportToExcel()" class="text-sm font-bold text-slate-500 hover:text-secondary transition"><i class="fa-solid fa-file-excel mr-1 text-green-600"></i> Export Excel</button>
+                                <button onclick="clearFilters()" class="text-sm font-bold text-slate-500 hover:text-secondary transition"><i class="fa-solid fa-filter-circle-xmark mr-1"></i> Clear Filters</button>
+                                <button onclick="loadAppointments()" class="text-sm font-bold text-primary hover:text-teal-700 transition"><i class="fa-solid fa-rotate-right mr-1"></i> Refresh</button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fa-solid fa-magnifying-glass text-slate-400"></i></div>
+                                <input type="text" id="filter-search" placeholder="Search Ref, Patient, Doctor..." class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 focus:ring-1 focus:ring-primary outline-none text-sm">
+                            </div>
+                            <select id="filter-dept" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-1 focus:ring-primary outline-none text-sm bg-white">
+                                <option value="">All Departments</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Neurology">Neurology</option>
+                                <option value="Orthopedics">Orthopedics</option>
+                                <option value="Pediatrics">Pediatrics</option>
+                                <option value="Oncology">Oncology</option>
+                                <option value="Dermatology">Dermatology</option>
+                                <option value="Ophthalmology">Ophthalmology</option>
+                                <option value="Psychiatry">Psychiatry</option>
+                            </select>
+                            <select id="filter-doc" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-1 focus:ring-primary outline-none text-sm bg-white">
+                                <option value="">All Doctors</option>
+                            </select>
+                            <input type="date" id="filter-date" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:ring-1 focus:ring-primary outline-none text-sm bg-white" title="Filter by Date">
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
@@ -142,7 +190,7 @@
                                 </tr>
                             </thead>
                             <tbody id="admin-appointments-list" class="text-sm text-slate-700 divide-y divide-slate-100">
-                                <tr><td colspan="4" class="p-8 text-center text-slate-400">Loading appointments...</td></tr>
+                                <tr><td colspan="5" class="p-8 text-center text-slate-400">Loading appointments...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -151,10 +199,24 @@
         </div>
     </div>
 
+    <!-- Admin Success Modal -->
+    <div id="admin-success-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm relative text-center">
+            <div class="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center text-primary text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 class="text-xl font-bold text-secondary mb-2">Booking Added!</h2>
+            <p class="text-slate-500 text-sm mb-6">The new booking was successfully added to the database.</p>
+            <button onclick="document.getElementById('admin-success-modal').classList.add('hidden')" class="w-full bg-primary text-white font-bold py-2.5 rounded-lg hover:bg-teal-700 transition shadow-sm">
+                Close
+            </button>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, serverTimestamp, query, orderBy, where, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBWp-8CEFAr2cSrcSHEZu7jnaUWUU9DHtY",
@@ -207,57 +269,172 @@
             signOut(auth);
         };
 
+        let allAppointmentsData = [];
+        let currentFilteredData = [];
+
         // Fetch Appointments
         window.loadAppointments = async function() {
-            tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Fetching...</td></tr>';
             try {
                 const q = query(collection(db, "appointments"), orderBy("createdAt", "desc"));
                 const snapshot = await getDocs(q);
                 
+                allAppointmentsData = [];
                 if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-400">No bookings found in the database.</td></tr>';
+                    renderAdminAppointments();
                     return;
                 }
 
-                tbody.innerHTML = '';
                 snapshot.forEach((document) => {
                     const data = document.data();
                     const id = document.id;
-                    const currentStatus = data.status || "Pending";
-                    let statusColor = currentStatus === 'Pending' ? 'text-yellow-600 bg-yellow-50 border-yellow-200' : (currentStatus === 'Confirmed' ? 'text-teal-600 bg-teal-50 border-teal-200' : 'text-red-600 bg-red-50 border-red-200');
-                    tbody.innerHTML += `
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="p-4">
-                                <p class="font-bold text-secondary">${data.patientName || 'N/A'}</p>
-                                <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-phone mr-1"></i> ${data.phone || 'N/A'}</p>
-                            </td>
-                            <td class="p-4">
-                                <p class="font-bold text-primary">${data.doctor}</p>
-                                <p class="text-xs text-slate-500 bg-slate-200 inline-block px-2 py-0.5 rounded mt-1">${data.department}</p>
-                            </td>
-                            <td class="p-4">
-                                <p class="font-medium text-slate-700"><i class="fa-regular fa-calendar text-primary mr-1"></i> ${data.date}</p>
-                                <p class="text-xs text-slate-500 mt-0.5"><i class="fa-regular fa-clock text-primary mr-1"></i> ${data.time}</p>
-                            </td>
-                            <td class="p-4 text-center">
-                                <select onchange="updateBookingStatus('${id}', this.value, '${data.email || ''}', '${data.patientName || 'Patient'}')" class="${statusColor} text-xs font-bold px-2 py-1 rounded outline-none cursor-pointer border hover:border-gray-300 transition">
-                                    <option value="Pending" ${currentStatus === 'Pending' ? 'selected' : ''}>Pending</option>
-                                    <option value="Confirmed" ${currentStatus === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                                    <option value="Cancelled" ${currentStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                                </select>
-                            </td>
-                            <td class="p-4 text-center">
-                                <button onclick="deleteAppointment('${id}')" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition" title="Delete Booking">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                    
+                    // Generate 12-digit mathematical reference from Date and Time
+                    let refNumber = id;
+                    if (data.date && data.time) {
+                        try {
+                            const dStr = data.date.replace(/-/g, ''); // YYYYMMDD
+                            const [tStr, mod] = data.time.split(' ');
+                            let [hr, mn] = tStr.split(':');
+                            let hrNum = parseInt(hr, 10);
+                            if (mod === 'PM' && hrNum !== 12) hrNum += 12;
+                            if (mod === 'AM' && hrNum === 12) hrNum = 0;
+                            refNumber = dStr + hrNum.toString().padStart(2, '0') + mn;
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+
+                    data.id = id;
+                    data.refNumber = refNumber;
+                    allAppointmentsData.push(data);
                 });
+
+                renderAdminAppointments();
             } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-red-500 font-medium">Error loading data: ${err.message}<br><span class="text-sm font-normal text-slate-500 mt-2 block">If the error says "Missing or insufficient permissions", your Firestore Rules have not updated yet.</span></td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500 font-medium">Error loading data: ${err.message}<br><span class="text-sm font-normal text-slate-500 mt-2 block">If the error says "Missing or insufficient permissions", your Firestore Rules have not updated yet.</span></td></tr>`;
                 console.error(err);
             }
+        };
+
+        window.renderAdminAppointments = function() {
+            const searchText = document.getElementById('filter-search').value.toLowerCase();
+            const filterDept = document.getElementById('filter-dept').value;
+            const filterDoc = document.getElementById('filter-doc').value;
+            const filterDate = document.getElementById('filter-date').value;
+
+            const filtered = allAppointmentsData.filter(data => {
+                const matchSearch = !searchText || 
+                    (data.refNumber && data.refNumber.toLowerCase().includes(searchText)) ||
+                    (data.patientName && data.patientName.toLowerCase().includes(searchText)) ||
+                    (data.doctor && data.doctor.toLowerCase().includes(searchText));
+                
+                const matchDept = !filterDept || data.department === filterDept;
+                const matchDoc = !filterDoc || data.doctor === filterDoc;
+                const matchDate = !filterDate || data.date === filterDate;
+
+                return matchSearch && matchDept && matchDoc && matchDate;
+            });
+
+            currentFilteredData = filtered;
+
+            document.getElementById('bookings-count').textContent = filtered.length;
+            document.getElementById('confirmed-count').textContent = filtered.filter(d => (d.status || 'Pending') === 'Confirmed').length;
+            document.getElementById('pending-count').textContent = filtered.filter(d => (d.status || 'Pending') === 'Pending').length;
+
+            tbody.innerHTML = '';
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">No bookings found matching your criteria.</td></tr>';
+                return;
+            }
+
+            filtered.forEach(data => {
+                const currentStatus = data.status || "Pending";
+                let statusColor = currentStatus === 'Pending' ? 'text-yellow-600 bg-yellow-50 border-yellow-200' : (currentStatus === 'Confirmed' ? 'text-teal-600 bg-teal-50 border-teal-200' : 'text-red-600 bg-red-50 border-red-200');
+                
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="p-4">
+                            <p class="font-bold text-secondary">${data.patientName || 'N/A'}</p>
+                            <p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-phone mr-1"></i> ${data.phone || 'N/A'}</p>
+                            <p class="text-xs text-slate-500 mt-1"><span class="font-bold text-slate-600">Ref:</span> <span class="font-mono text-primary bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">${data.refNumber}</span></p>
+                        </td>
+                        <td class="p-4">
+                            <p class="font-bold text-primary">${data.doctor}</p>
+                            <p class="text-xs text-slate-500 bg-slate-200 inline-block px-2 py-0.5 rounded mt-1">${data.department}</p>
+                        </td>
+                        <td class="p-4">
+                            <p class="font-medium text-slate-700"><i class="fa-regular fa-calendar text-primary mr-1"></i> ${data.date}</p>
+                            <p class="text-xs text-slate-500 mt-0.5"><i class="fa-regular fa-clock text-primary mr-1"></i> ${data.time}</p>
+                        </td>
+                        <td class="p-4 text-center">
+                            <select onchange="updateBookingStatus('${data.id}', this.value, '${data.email || ''}', '${data.patientName || 'Patient'}')" class="${statusColor} text-xs font-bold px-2 py-1 rounded outline-none cursor-pointer border hover:border-gray-300 transition">
+                                <option value="Pending" ${currentStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Confirmed" ${currentStatus === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                                <option value="Cancelled" ${currentStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="deleteAppointment('${data.id}')" class="text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 p-2 rounded-lg transition" title="Delete Booking">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        };
+
+        window.clearFilters = function() {
+            document.getElementById('filter-search').value = '';
+            document.getElementById('filter-dept').value = '';
+            document.getElementById('filter-date').value = '';
+            
+            const filterDocSelect = document.getElementById('filter-doc');
+            filterDocSelect.innerHTML = '<option value="">All Doctors</option>';
+            doctorsList.forEach(doc => {
+                filterDocSelect.innerHTML += `<option value="${doc.name}">${doc.name}</option>`;
+            });
+            filterDocSelect.value = '';
+
+            renderAdminAppointments();
+        };
+
+        // Export to Excel
+        window.exportToExcel = function() {
+            if (!currentFilteredData || currentFilteredData.length === 0) {
+                alert("No data available to export.");
+                return;
+            }
+
+            const exportData = currentFilteredData.map(data => ({
+                "Reference": data.refNumber || '',
+                "Patient Name": data.patientName || 'N/A',
+                "Phone": data.phone || 'N/A',
+                "Email": data.email || 'N/A',
+                "Department": data.department || '',
+                "Doctor": data.doctor || '',
+                "Date": data.date || '',
+                "Time": data.time || '',
+                "Status": data.status || 'Pending',
+                "Message": data.message || ''
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(exportData);
+            
+            // Auto-size columns to fit content
+            const colWidths = Object.keys(exportData[0]).map(key => {
+                let max = key.length;
+                exportData.forEach(row => {
+                    const valStr = row[key] ? String(row[key]) : '';
+                    if (valStr.length > max) max = valStr.length;
+                });
+                return { wch: max + 2 }; // Added +2 for a little extra padding
+            });
+            ws['!cols'] = colWidths;
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Bookings");
+            XLSX.writeFile(wb, `MD_Care_Bookings_${new Date().toISOString().slice(0,10)}.xlsx`);
         };
 
         // Update Booking Status
@@ -334,7 +511,104 @@
                     docSelect.appendChild(option);
                 });
             } else { docSelect.disabled = true; }
+            checkAdminAvailability();
         });
+
+        // Setup Filter Dropdowns and Search Events
+        const filterDocSelect = document.getElementById('filter-doc');
+        doctorsList.forEach(doc => {
+            filterDocSelect.innerHTML += `<option value="${doc.name}">${doc.name}</option>`;
+        });
+
+        document.getElementById('filter-search').addEventListener('input', window.renderAdminAppointments);
+        document.getElementById('filter-date').addEventListener('change', window.renderAdminAppointments);
+        filterDocSelect.addEventListener('change', window.renderAdminAppointments);
+        document.getElementById('filter-dept').addEventListener('change', (e) => {
+            const dept = e.target.value;
+            filterDocSelect.innerHTML = '<option value="">All Doctors</option>';
+            const docsToPopulate = dept ? doctorsList.filter(d => d.dept === dept) : doctorsList;
+            docsToPopulate.forEach(doc => {
+                filterDocSelect.innerHTML += `<option value="${doc.name}">${doc.name}</option>`;
+            });
+            window.renderAdminAppointments();
+        });
+
+        const adminDateSel = document.getElementById('add-date');
+        const adminTimeSel = document.getElementById('add-time');
+        const adminAvlMsg = document.getElementById('admin-availability-message');
+        const adminSubBtn = document.querySelector('#admin-booking-form button[type="submit"]');
+
+        async function checkAdminAvailability() {
+            if(!adminDateSel.value || !docSelect.value) {
+                adminAvlMsg.innerHTML = "";
+                return;
+            }
+            
+            // Reset time options
+            Array.from(adminTimeSel.options).forEach(opt => {
+                if(opt.value !== "") {
+                    opt.disabled = false;
+                    opt.textContent = opt.value;
+                }
+            });
+
+            const d = new Date(adminDateSel.value);
+            if(d.getDay() === 0) {
+                adminAvlMsg.innerHTML = "<span class='text-red-500'><i class='fa-solid fa-circle-xmark mr-1'></i> Sunday is closed.</span>";
+                adminSubBtn.disabled = true; adminSubBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                adminTimeSel.disabled = true;
+                return;
+            } else {
+                adminTimeSel.disabled = false;
+            }
+
+            adminAvlMsg.innerHTML = "<span class='text-slate-500'><i class='fa-solid fa-spinner fa-spin mr-1'></i> Checking slots...</span>";
+            adminSubBtn.disabled = true; adminSubBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            try {
+                const q = query(collection(db, "appointments"), where("date", "==", adminDateSel.value));
+                const snapshot = await getDocs(q);
+                
+                const bookedTimes = [];
+                snapshot.forEach(documentSnapshot => {
+                    const data = documentSnapshot.data();
+                    if (data.doctor === docSelect.value && data.status !== 'Cancelled') {
+                        bookedTimes.push(data.time);
+                    }
+                });
+
+                Array.from(adminTimeSel.options).forEach(opt => {
+                    if(bookedTimes.includes(opt.value)) {
+                        opt.disabled = true;
+                        opt.textContent = opt.value + " (Booked)";
+                    }
+                });
+
+                if(bookedTimes.includes(adminTimeSel.value)) {
+                    adminTimeSel.value = "";
+                }
+
+                if(adminTimeSel.value) {
+                    adminAvlMsg.innerHTML = "<span class='text-primary'><i class='fa-solid fa-circle-check mr-1'></i> Slot available!</span>";
+                    adminSubBtn.disabled = false; adminSubBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    adminAvlMsg.innerHTML = "<span class='text-slate-500'><i class='fa-solid fa-circle-info mr-1'></i> Please select an available time.</span>";
+                    adminSubBtn.disabled = true; adminSubBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            } catch (error) {
+                console.error("Error checking availability:", error);
+                if(adminTimeSel.value) {
+                    adminAvlMsg.innerHTML = "<span class='text-primary'><i class='fa-solid fa-circle-check mr-1'></i> Ready to book!</span>";
+                    adminSubBtn.disabled = false; adminSubBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    adminAvlMsg.innerHTML = "";
+                }
+            }
+        }
+
+        adminDateSel.addEventListener('change', checkAdminAvailability);
+        adminTimeSel.addEventListener('change', checkAdminAvailability);
+        docSelect.addEventListener('change', checkAdminAvailability);
 
         // Add New Booking via Admin
         document.getElementById('admin-booking-form').addEventListener('submit', async (e) => {
@@ -343,31 +617,64 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
             btn.disabled = true;
             
+            const slotId = `${document.getElementById('add-date').value}_${docSelect.value}_${document.getElementById('add-time').value}`.replace(/[^a-zA-Z0-9]/g, '_');
+            const appointmentRef = doc(db, "appointments", slotId);
+
             try {
-                await addDoc(collection(db, "appointments"), {
-                    userId: "admin_created_record",
-                    patientName: document.getElementById('add-name').value,
-                    phone: document.getElementById('add-phone').value,
-                    department: deptSelect.value,
-                    doctor: docSelect.value,
-                    date: document.getElementById('add-date').value,
-                    time: document.getElementById('add-time').value,
-                    message: "Added manually by Admin",
-                    status: "Confirmed",
-                    createdAt: serverTimestamp()
+                await runTransaction(db, async (transaction) => {
+                    const docSnap = await transaction.get(appointmentRef);
+                    if (docSnap.exists() && docSnap.data().status !== 'Cancelled') {
+                        throw new Error("SLOT_ALREADY_BOOKED");
+                    }
+                    
+                    transaction.set(appointmentRef, {
+                        userId: "admin_created_record",
+                        patientName: document.getElementById('add-name').value,
+                        phone: document.getElementById('add-phone').value,
+                        department: deptSelect.value,
+                        doctor: docSelect.value,
+                        date: document.getElementById('add-date').value,
+                        time: document.getElementById('add-time').value,
+                        message: "Added manually by Admin",
+                        status: "Confirmed",
+                        createdAt: serverTimestamp()
+                    });
                 });
                 e.target.reset();
                 docSelect.disabled = true;
                 docSelect.innerHTML = '<option value="" disabled selected>Select Doctor</option>';
+                adminAvlMsg.innerHTML = '';
                 loadAppointments(); // Refresh table
-                alert("New booking successfully added!");
+                document.getElementById('admin-success-modal').classList.remove('hidden');
             } catch (err) {
-                alert("Error adding booking: " + err.message);
+                if (err.message === "SLOT_ALREADY_BOOKED") {
+                    alert("Sorry, this slot was just booked. Please select a different time.");
+                    checkAdminAvailability();
+                } else {
+                    alert("Error adding booking: " + err.message);
+                }
             } finally {
                 btn.innerHTML = 'Add Booking';
                 btn.disabled = false;
             }
         });
+
+        // Admin Phone Validation
+        const adminPhoneInput = document.getElementById('add-phone');
+        const adminPhoneError = document.getElementById('admin-phone-error');
+        adminPhoneInput.addEventListener('input', function() {
+            if (this.value && !/^[0-9]{10}$/.test(this.value)) {
+                adminPhoneError.classList.remove('hidden');
+            } else {
+                adminPhoneError.classList.add('hidden');
+            }
+        });
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        document.getElementById('add-date').setAttribute('min', `${year}-${month}-${day}`);
     </script>
 <script src="chatbot.js"></script>
 </body>

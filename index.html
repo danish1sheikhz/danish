@@ -52,10 +52,10 @@
                 <!-- Mn Menu -->
                 <div class="hidden md:flex space-x-8 items-center">
                     <a href="#home" class="text-primary transition font-bold">Home</a>
-                    <a href="#about" class="text-slate-600 hover:text-primary transition font-medium">About</a>
-                    <a href="#departments" class="text-slate-600 hover:text-primary transition font-medium">Departments</a>
+                    <a href="about.html" class="text-slate-600 hover:text-primary transition font-medium">About</a>
+                    <a href="departments.html" class="text-slate-600 hover:text-primary transition font-medium">Departments</a>
                     <a href="services.html" class="text-slate-600 hover:text-primary transition font-medium">Services</a>
-                    <a href="#doctors" class="text-slate-600 hover:text-primary transition font-medium">Doctors</a>
+                    <a href="doctors.html" class="text-slate-600 hover:text-primary transition font-medium">Doctors</a>
                     <button onclick="handleAppointmentClick()" class="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-teal-700 transition shadow-lg shadow-teal-500/30">Book Appointment</button>
                     
                     <!-- Auth butn -->
@@ -76,10 +76,10 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
                 <a href="#home" class="block px-3 py-2 text-primary font-bold hover:bg-slate-50 rounded-md">Home</a>
-                <a href="#about" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">About</a>
-                <a href="#departments" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Departments</a>
+                <a href="about.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">About</a>
+                <a href="departments.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Departments</a>
                 <a href="services.html" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Services</a>
-                <a href="#doctors" class="block px-3 py-2 text-slate-600 hover:text-primary hover:bg-slate-50 rounded-md">Doctors</a>
+                <a href="doctors.html" class="block px-3 py-2 text-primary font-bold hover:bg-slate-50 rounded-md">Doctors</a>
                 <button onclick="handleAppointmentClick()" class="block w-full text-left px-3 py-2 text-primary font-bold hover:bg-slate-50 rounded-md">Book Appointment</button>
                 <div id="mobile-auth-container" class="border-t border-gray-200 mt-2 pt-2 flex flex-col">
                 </div>
@@ -104,7 +104,7 @@
                     <button onclick="handleAppointmentClick()" class="bg-primary text-white px-8 py-3 rounded-full font-medium hover:bg-teal-700 transition text-center">
                         Book an Appointment
                     </button>
-                    <a href="#about" class="bg-white text-secondary px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition text-center">
+                    <a href="about.html" class="bg-white text-secondary px-8 py-3 rounded-full font-medium hover:bg-gray-100 transition text-center">
                         Learn More
                     </a>
                 </div>
@@ -152,26 +152,26 @@
             <!-- Hospital Stats -->
             <div class="bg-secondary rounded-3xl p-10 md:p-16 text-white grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full opacity-20 -mr-20 -mt-20 blur-2xl"></div>
-                <div class="relative z-10">
-                    <i class="fa-solid fa-bed-pulse text-4xl text-primary mb-4"></i>
+                <button onclick="openModal('beds-modal')" class="relative z-10 hover:scale-105 transition duration-300 group outline-none">
+                    <i class="fa-solid fa-bed-pulse text-4xl text-primary mb-4 group-hover:text-teal-400 transition"></i>
                     <h3 class="text-4xl font-bold mb-2">500+</h3>
-                    <p class="text-slate-300">Hospital Beds</p>
-                </div>
-                <div class="relative z-10">
-                    <i class="fa-solid fa-user-doctor text-4xl text-primary mb-4"></i>
-                    <h3 class="text-4xl font-bold mb-2">100+</h3>
-                    <p class="text-slate-300">Expert Doctors</p>
-                </div>
-                <div class="relative z-10">
-                    <i class="fa-solid fa-face-smile text-4xl text-primary mb-4"></i>
+                    <p class="text-slate-300 group-hover:text-white transition">Hospital Beds</p>
+                </button>
+                <a href="doctors.html" class="relative z-10 hover:scale-105 transition duration-300 group outline-none block">
+                    <i class="fa-solid fa-user-doctor text-4xl text-primary mb-4 group-hover:text-teal-400 transition"></i>
+                    <h3 class="text-4xl font-bold mb-2">30+</h3>
+                    <p class="text-slate-300 group-hover:text-white transition">Expert Doctors</p>
+                </a>
+                <button onclick="openModal('reviews-modal')" class="relative z-10 hover:scale-105 transition duration-300 group outline-none">
+                    <i class="fa-solid fa-face-smile text-4xl text-primary mb-4 group-hover:text-teal-400 transition"></i>
                     <h3 class="text-4xl font-bold mb-2">50k+</h3>
-                    <p class="text-slate-300">Happy Patients</p>
-                </div>
-                <div class="relative z-10">
-                    <i class="fa-solid fa-award text-4xl text-primary mb-4"></i>
+                    <p class="text-slate-300 group-hover:text-white transition">Happy Patients</p>
+                </button>
+                <button onclick="openModal('awards-modal')" class="relative z-10 hover:scale-105 transition duration-300 group outline-none">
+                    <i class="fa-solid fa-award text-4xl text-primary mb-4 group-hover:text-teal-400 transition"></i>
                     <h3 class="text-4xl font-bold mb-2">25+</h3>
-                    <p class="text-slate-300">Medical Awards</p>
-                </div>
+                    <p class="text-slate-300 group-hover:text-white transition">Medical Awards</p>
+                </button>
             </div>
         </div>
     </section>
@@ -205,7 +205,14 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4">Meet Our Medical Experts</h2>
                 <p class="text-slate-600">Click on any doctor's profile to view their full biodata, qualifications, and contact information.</p>
             </div>
-            <div id="doctors-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"></div>
+            <div class="relative group">
+                <button id="slide-left" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 lg:-ml-6 z-10 bg-white w-12 h-12 rounded-full shadow-lg border border-slate-100 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition focus:outline-none opacity-0 group-hover:opacity-100"><i class="fa-solid fa-chevron-left"></i></button>
+                <div id="doctors-slider" class="flex overflow-x-auto snap-x snap-mandatory gap-6 no-scrollbar pb-8 pt-4 px-4 scroll-smooth"></div>
+                <button id="slide-right" class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 lg:-mr-6 z-10 bg-white w-12 h-12 rounded-full shadow-lg border border-slate-100 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition focus:outline-none opacity-0 group-hover:opacity-100"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <div class="text-center mt-4">
+                <a href="doctors.html" class="inline-block bg-slate-100 text-primary font-bold py-3 px-8 rounded-full hover:bg-slate-200 transition shadow-sm border border-slate-200">View All Doctors <i class="fa-solid fa-arrow-right ml-2"></i></a>
+            </div>
         </div>
     </section>
 
@@ -270,7 +277,8 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
-                                <input type="tel" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="e.g., 8091919997">
+                                <input type="tel" id="booking-phone" required pattern="[0-9]{10}" title="Phone number must be exactly 10 digits" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition" placeholder="e.g., 8091919997">
+                                <div id="phone-error" class="text-sm font-bold mt-2 text-red-500 hidden"><i class="fa-solid fa-circle-xmark mr-1"></i> Phone number must be exactly 10 digits</div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-2">Department</label>
@@ -301,10 +309,21 @@
                                 <select id="time-select" required class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition bg-white">
                                     <option value="" disabled selected>Select Time</option>
                                     <option value="09:00 AM">09:00 AM</option>
+                                    <option value="09:30 AM">09:30 AM</option>
                                     <option value="10:00 AM">10:00 AM</option>
+                                    <option value="10:30 AM">10:30 AM</option>
+                                    <option value="11:00 AM">11:00 AM</option>
                                     <option value="11:30 AM">11:30 AM</option>
+                                    <option value="12:00 PM">12:00 PM</option>
+                                    <option value="12:30 PM">12:30 PM</option>
+                                    <option value="01:00 PM">01:00 PM</option>
+                                    <option value="01:30 PM">01:30 PM</option>
                                     <option value="02:00 PM">02:00 PM</option>
+                                    <option value="02:30 PM">02:30 PM</option>
+                                    <option value="03:00 PM">03:00 PM</option>
+                                    <option value="03:30 PM">03:30 PM</option>
                                     <option value="04:00 PM">04:00 PM</option>
+                                    <option value="04:30 PM">04:30 PM</option>
                                 </select>
                             </div>
                             <div id="availability-message" class="col-span-1 md:col-span-2 text-sm font-bold mt-[-10px]">
@@ -398,10 +417,11 @@
 
     <!-- Advanced Labs -->
     <div id="labs-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop transition-opacity p-4">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl relative overflow-y-auto max-h-[90vh] no-scrollbar">
-            <button onclick="closeModal('labs-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-secondary text-2xl z-10"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-2xl font-bold text-secondary mb-4"><i class="fa-solid fa-microscope text-primary mr-2"></i> Advanced Labs & Diagnostics</h2>
-            <p class="text-slate-600 mb-6">Our laboratory is fully equipped with cutting-edge technology for precise and rapid testing.</p>
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl relative flex flex-col max-h-[90vh] overflow-hidden">
+            <button onclick="closeModal('labs-modal')" class="absolute top-4 right-4 text-slate-500 hover:text-secondary text-2xl z-20 bg-white/90 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+            <div class="p-8 overflow-y-auto no-scrollbar flex-grow">
+                <h2 class="text-2xl font-bold text-secondary mb-4"><i class="fa-solid fa-microscope text-primary mr-2"></i> Advanced Labs & Diagnostics</h2>
+                <p class="text-slate-600 mb-6">Our laboratory is fully equipped with cutting-edge technology for precise and rapid testing.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Blood Testing Lab" class="rounded-xl shadow-md w-full h-40 object-cover mb-3">
@@ -414,6 +434,7 @@
                     <p class="text-xs text-slate-500 mt-1">High-resolution MRI, CT scan, and digital X-Ray facilities.</p>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
@@ -429,6 +450,134 @@
                 <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl border border-slate-100"><div class="flex items-center gap-3"><i class="fa-solid fa-truck-medical text-red-500 text-xl"></i><span class="font-bold text-slate-700">Ambulance</span></div><a href="tel:108" class="text-xl font-bold text-red-600 hover:underline">108</a></div>
                 <div class="flex justify-between items-center bg-teal-50 p-4 rounded-xl border border-teal-100"><div class="flex items-center gap-3"><i class="fa-solid fa-hospital text-primary text-xl"></i><span class="font-bold text-teal-900 text-left leading-tight">MD Care<br/><span class="text-xs">Emergency</span></span></div><a href="tel:8091919997" class="text-xl font-bold text-primary hover:underline">8091919997</a></div>
             </div>
+        </div>
+    </div>
+
+    <!-- Beds Modal -->
+    <div id="beds-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop transition-opacity p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative flex flex-col max-h-[90vh] overflow-hidden">
+            <button onclick="closeModal('beds-modal')" class="absolute top-4 right-4 text-slate-500 hover:text-secondary text-2xl z-20 bg-white/90 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+            <div class="p-8 overflow-y-auto no-scrollbar flex-grow">
+                <h2 class="text-2xl font-bold text-secondary mb-4"><i class="fa-solid fa-bed-pulse text-primary mr-2"></i> Department-wise Hospital Beds</h2>
+                <p class="text-slate-600 mb-6">Explore our specialized wards equipped with advanced monitoring and comfortable beds for our patients.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <img src="images/icu-beds.avif" alt="ICU Beds" class="w-full h-40 object-cover">
+                    <div class="p-4 bg-slate-50 text-center">
+                        <h4 class="font-bold text-secondary">Intensive Care Unit (ICU)</h4>
+                        <p class="text-xs text-slate-500 mt-1">100 Beds - 24/7 Life Support</p>
+                    </div>
+                </div>
+                <div class="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <img src="images/cardiology-ward.avif" alt="Cardiology Ward" class="w-full h-40 object-cover">
+                    <div class="p-4 bg-slate-50 text-center">
+                        <h4 class="font-bold text-secondary">Cardiology Ward</h4>
+                        <p class="text-xs text-slate-500 mt-1">80 Beds - Cardiac Monitoring</p>
+                    </div>
+                </div>
+                <div class="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <img src="images/general-ward.avif" alt="General Ward" class="w-full h-40 object-cover">
+                    <div class="p-4 bg-slate-50 text-center">
+                        <h4 class="font-bold text-secondary">General Wards</h4>
+                        <p class="text-xs text-slate-500 mt-1">200 Beds - Comfortable Care</p>
+                    </div>
+                </div>
+                <div class="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <img src="images/nicu-ward.avif" alt="NICU" class="w-full h-40 object-cover">
+                    <div class="p-4 bg-slate-50 text-center">
+                        <h4 class="font-bold text-secondary">Pediatric & NICU</h4>
+                        <p class="text-xs text-slate-500 mt-1">70 Beds - Specialized Neonatal</p>
+                    </div>
+                </div>
+                <div class="border border-slate-100 rounded-xl overflow-hidden shadow-sm">
+                    <img src="images/orthopedic-ward.avif" alt="Orthopedic Ward" class="w-full h-40 object-cover">
+                    <div class="p-4 bg-slate-50 text-center">
+                        <h4 class="font-bold text-secondary">Orthopedics Ward</h4>
+                        <p class="text-xs text-slate-500 mt-1">50 Beds - Recovery & Rehab</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Reviews Modal -->
+    <div id="reviews-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop transition-opacity p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl relative flex flex-col max-h-[90vh] overflow-hidden">
+            <button onclick="closeModal('reviews-modal')" class="absolute top-4 right-4 text-slate-500 hover:text-secondary text-2xl z-20 bg-white/90 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+            <div class="p-8 overflow-y-auto no-scrollbar flex-grow">
+                <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-secondary mb-2"><i class="fa-solid fa-star text-yellow-400 mr-2"></i> Patient Reviews</h2>
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <i class="fa-solid fa-star text-yellow-400 text-xl"></i>
+                    <i class="fa-solid fa-star text-yellow-400 text-xl"></i>
+                    <i class="fa-solid fa-star text-yellow-400 text-xl"></i>
+                    <i class="fa-solid fa-star text-yellow-400 text-xl"></i>
+                    <i class="fa-solid fa-star-half-stroke text-yellow-400 text-xl"></i>
+                    <span class="text-xl font-bold text-secondary ml-2">4.8/5</span>
+                </div>
+                <p class="text-slate-600 text-sm">Based on 50,000+ happy patients</p>
+            </div>
+        <div id="reviews-container" class="space-y-4">
+            <!-- Injected via JS -->
+        </div>
+        <div class="text-center mt-6">
+            <button id="load-more-reviews-btn" onclick="loadMoreReviews()" class="bg-slate-100 text-primary font-bold py-2.5 px-6 rounded-full hover:bg-slate-200 transition shadow-sm hidden border border-slate-200">
+                Load More Reviews <i class="fa-solid fa-angle-down ml-1"></i>
+            </button>
+        </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Awards Modal -->
+    <div id="awards-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop transition-opacity p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl relative flex flex-col max-h-[90vh] overflow-hidden">
+            <button onclick="closeModal('awards-modal')" class="absolute top-4 right-4 text-slate-500 hover:text-secondary text-2xl z-20 bg-white/90 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+            <div class="p-8 overflow-y-auto no-scrollbar flex-grow">
+                <h2 class="text-2xl font-bold text-secondary mb-2"><i class="fa-solid fa-trophy text-primary mr-2"></i> Medical Excellence Awards</h2>
+                <p class="text-slate-600 mb-6">Our doctors are recognized globally for their outstanding contributions to medical science and patient care.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="images/award1.avif" alt="Award Ceremony 1" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 to-transparent p-4">
+                        <p class="text-white font-bold text-sm">Best Cardiology Team 2023</p>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="images/award2.avif" alt="Award Ceremony 2" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 to-transparent p-4">
+                        <p class="text-white font-bold text-sm">National Excellence in Patient Care</p>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="images/award3.avif" alt="Award Ceremony 3" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 to-transparent p-4">
+                        <p class="text-white font-bold text-sm">Top Innovators in Healthcare Tech</p>
+                    </div>
+                </div>
+                <div class="relative group overflow-hidden rounded-xl">
+                    <img src="images/award4.avif" alt="Award Ceremony 4" class="w-full h-56 object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 to-transparent p-4">
+                        <p class="text-white font-bold text-sm">Award for Highest Surgical Success</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop transition-opacity p-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative text-center">
+            <div class="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center text-primary text-4xl mx-auto mb-6">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-secondary mb-2">Booking Confirmed!</h2>
+            <p class="text-slate-600 mb-8">Thank you! Your appointment request has been sent to MD Care Hospital front desk.</p>
+            <button onclick="closeModal('success-modal')" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-teal-700 transition shadow-md">
+                Done
+            </button>
         </div>
     </div>
 
@@ -448,9 +597,9 @@
                     <h3 class="text-lg font-bold mb-6 text-white border-b-2 border-primary pb-2 inline-block">Quick Links</h3>
                     <ul class="space-y-3 text-gray-400">
                         <li><a href="index.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Home</a></li>
-                        <li><a href="#about" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> About Us</a></li>
-                        <li><a href="#departments" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Departments</a></li>
-                        <li><a href="#doctors" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Doctors</a></li>
+                        <li><a href="about.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> About Us</a></li>
+                        <li><a href="departments.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Departments</a></li>
+                        <li><a href="doctors.html" class="hover:text-primary transition"><i class="fa-solid fa-angle-right mr-2"></i> Doctors</a></li>
                     </ul>
                 </div>
 
@@ -495,7 +644,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, query, where, getDocs, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBWp-8CEFAr2cSrcSHEZu7jnaUWUU9DHtY",
@@ -653,37 +802,37 @@
         // --- Doctors ---
 
         const doctorsList = [
-            { name: "Dr. Rajat Sharma", dept: "Cardiology", qual: "MBBS, MD, DM (Cardiology)", exp: "15+ Years", email: "rajat.sharma@mdcare.com", img: "https://randomuser.me/api/portraits/men/11.jpg", bio: "Specializes in interventional cardiology and advanced heart failure treatments. Renowned for performing complex angioplasties with a 99% success rate." },
-            { name: "Dr. Neha Verma", dept: "Cardiology", qual: "MBBS, MS, Fellowship in Cardiac Surgery", exp: "10 Years", email: "neha.verma@mdcare.com", img: "https://randomuser.me/api/portraits/women/12.jpg", bio: "Expert in pediatric cardiology and minimally invasive cardiac surgeries. A leading voice in preventive cardiovascular healthcare." },
-            { name: "Dr. Arjun Patel", dept: "Cardiology", qual: "MBBS, MD (Cardiology)", exp: "8 Years", email: "arjun.patel@mdcare.com", img: "https://randomuser.me/api/portraits/men/13.jpg", bio: "Dedicated to echocardiography and non-invasive diagnostics. Passionate about managing chronic heart conditions." },
-            { name: "Dr. Anil Kapoor", dept: "Neurology", qual: "MBBS, DM (Neurology)", exp: "20 Years", email: "anil.kapoor@mdcare.com", img: "https://randomuser.me/api/portraits/men/14.jpg", bio: "Senior neurologist specializing in stroke management, epilepsy, and neurodegenerative disorders. Heads the stroke trauma unit." },
-            { name: "Dr. Priya Singh", dept: "Neurology", qual: "MBBS, MD (Medicine), DM", exp: "12 Years", email: "priya.singh@mdcare.com", img: "https://randomuser.me/api/portraits/women/15.jpg", bio: "Focuses on multiple sclerosis and movement disorders. Heavily involved in clinical research and advanced neural mapping." },
-            { name: "Dr. Rohan Mehta", dept: "Neurology", qual: "MBBS, MS (Neuro Surgery)", exp: "14 Years", email: "rohan.mehta@mdcare.com", img: "https://randomuser.me/api/portraits/men/16.jpg", bio: "Expert neurosurgeon performing delicate brain and spinal cord surgeries with state-of-the-art robotic assistance." },
-            { name: "Dr. Vikram Das", dept: "Orthopedics", qual: "MBBS, MS (Orthopedics)", exp: "18 Years", email: "vikram.das@mdcare.com", img: "https://randomuser.me/api/portraits/men/17.jpg", bio: "Leading joint replacement surgeon. Pioneer in performing bilateral knee replacements and sports injury reconstruction." },
-            { name: "Dr. Sana Khan", dept: "Orthopedics", qual: "MBBS, DNB (Ortho)", exp: "9 Years", email: "sana.khan@mdcare.com", img: "https://randomuser.me/api/portraits/women/18.jpg", bio: "Specializes in arthroscopy and pediatric orthopedics. Dedicated to correcting congenital bone deformities." },
-            { name: "Dr. Aditya Rao", dept: "Orthopedics", qual: "MBBS, MS", exp: "11 Years", email: "aditya.rao@mdcare.com", img: "https://randomuser.me/api/portraits/men/19.jpg", bio: "Trauma specialist dealing with complex fractures and spinal injuries originating from severe accidents." },
-            { name: "Dr. Amit Patel", dept: "Pediatrics", qual: "MBBS, MD (Pediatrics)", exp: "16 Years", email: "amit.patel@mdcare.com", img: "https://randomuser.me/api/portraits/men/20.jpg", bio: "Friendly and highly experienced pediatrician. Dedicated to child immunization, developmental milestones, and neonatal intensive care." },
-            { name: "Dr. Kavita Rao", dept: "Pediatrics", qual: "MBBS, DCH", exp: "13 Years", email: "kavita.rao@mdcare.com", img: "https://randomuser.me/api/portraits/women/21.jpg", bio: "Expert in treating pediatric asthma, allergies, and nutritional disorders in growing toddlers." },
-            { name: "Dr. Nidhi Sharma", dept: "Pediatrics", qual: "MBBS, MD", exp: "7 Years", email: "nidhi.sharma@mdcare.com", img: "https://randomuser.me/api/portraits/women/22.jpg", bio: "Neonatologist who runs the NICU. Passionate about saving premature babies and ensuring healthy early development." },
-            { name: "Dr. Sameer Reddy", dept: "Oncology", qual: "MBBS, DM (Medical Oncology)", exp: "19 Years", email: "sameer.reddy@mdcare.com", img: "https://randomuser.me/api/portraits/men/23.jpg", bio: "Pioneer in targeted therapies and immunotherapy for solid tumors. Compassionate doctor focusing on quality of life." },
-            { name: "Dr. Anjali Desai", dept: "Oncology", qual: "MBBS, MS (Surgical Oncology)", exp: "14 Years", email: "anjali.desai@mdcare.com", img: "https://randomuser.me/api/portraits/women/24.jpg", bio: "Highly skilled surgical oncologist performing tumor resections, including complex breast and gastrointestinal cancer surgeries." },
-            { name: "Dr. Kabir Jain", dept: "Oncology", qual: "MBBS, MD (Radiation)", exp: "10 Years", email: "kabir.jain@mdcare.com", img: "https://randomuser.me/api/portraits/men/25.jpg", bio: "Expert in precision radiation oncology, utilizing CyberKnife and advanced linear accelerators." },
-            { name: "Dr. Varun Gupta", dept: "Dermatology", qual: "MBBS, MD (Dermatology)", exp: "12 Years", email: "varun.gupta@mdcare.com", img: "https://randomuser.me/api/portraits/men/26.jpg", bio: "Specializes in clinical dermatology, treating severe psoriasis, eczema, and complex autoimmune skin diseases." },
-            { name: "Dr. Pooja Iyer", dept: "Dermatology", qual: "MBBS, DDVL", exp: "8 Years", email: "pooja.iyer@mdcare.com", img: "https://randomuser.me/api/portraits/women/27.jpg", bio: "Renowned for aesthetic dermatology, laser treatments, and advanced scar reduction therapies." },
-            { name: "Dr. Akash Singh", dept: "Dermatology", qual: "MBBS, MD", exp: "15 Years", email: "akash.singh@mdcare.com", img: "https://randomuser.me/api/portraits/men/28.jpg", bio: "Expert in dermato-surgery and hair transplant procedures. Leads the vitiligo research department." },
-            { name: "Dr. Tarun Kumar", dept: "Ophthalmology", qual: "MBBS, MS (Ophthalmology)", exp: "17 Years", email: "tarun.kumar@mdcare.com", img: "https://randomuser.me/api/portraits/men/29.jpg", bio: "Senior eye surgeon specializing in advanced cataract surgeries and premium intraocular lens implants." },
-            { name: "Dr. Sneha Nair", dept: "Ophthalmology", qual: "MBBS, DO", exp: "11 Years", email: "sneha.nair@mdcare.com", img: "https://randomuser.me/api/portraits/women/30.jpg", bio: "Specialist in refractive surgeries (LASIK) and managing complex glaucoma conditions." },
-            { name: "Dr. Rahul Bose", dept: "Ophthalmology", qual: "MBBS, MS", exp: "9 Years", email: "rahul.bose@mdcare.com", img: "https://randomuser.me/api/portraits/men/31.jpg", bio: "Vitreoretinal surgeon dealing with diabetic retinopathy and macular degeneration." },
-            { name: "Dr. Kabir Singh", dept: "Psychiatry", qual: "MBBS, MD (Psychiatry)", exp: "14 Years", email: "kabir.singh@mdcare.com", img: "https://randomuser.me/api/portraits/men/32.jpg", bio: "Focuses on adult psychiatry, treating severe clinical depression, bipolar disorder, and anxiety management." },
-            { name: "Dr. Aisha Ali", dept: "Psychiatry", qual: "MBBS, DPM", exp: "10 Years", email: "aisha.ali@mdcare.com", img: "https://randomuser.me/api/portraits/women/33.jpg", bio: "Child and adolescent psychiatrist. Expert in managing ADHD, autism spectrum, and behavioral issues." },
-            { name: "Dr. Manish Sen", dept: "Psychiatry", qual: "MBBS, MD", exp: "16 Years", email: "manish.sen@mdcare.com", img: "https://randomuser.me/api/portraits/men/34.jpg", bio: "Addiction specialist running the hospital's renowned de-addiction and rehabilitation clinic." }
+            { name: "Dr. Rajat Sharma", dept: "Cardiology", qual: "MBBS, MD, DM (Cardiology)", exp: "15+ Years", email: "rajat.sharma@mdcare.com", img: "images/maled1.avif", bio: "Specializes in interventional cardiology and advanced heart failure treatments. Renowned for performing complex angioplasties with a 99% success rate." },
+            { name: "Dr. Neha Verma", dept: "Cardiology", qual: "MBBS, MS, Fellowship in Cardiac Surgery", exp: "10 Years", email: "neha.verma@mdcare.com", img: "images/femaled2.avif", bio: "Expert in pediatric cardiology and minimally invasive cardiac surgeries. A leading voice in preventive cardiovascular healthcare." },
+            { name: "Dr. Arjun Patel", dept: "Cardiology", qual: "MBBS, MD (Cardiology)", exp: "8 Years", email: "arjun.patel@mdcare.com", img: "images/maled3.avif", bio: "Dedicated to echocardiography and non-invasive diagnostics. Passionate about managing chronic heart conditions." },
+            { name: "Dr. Anil Kapoor", dept: "Neurology", qual: "MBBS, DM (Neurology)", exp: "20 Years", email: "anil.kapoor@mdcare.com", img: "images/maled4.avif", bio: "Senior neurologist specializing in stroke management, epilepsy, and neurodegenerative disorders. Heads the stroke trauma unit." },
+            { name: "Dr. Priya Singh", dept: "Neurology", qual: "MBBS, MD (Medicine), DM", exp: "12 Years", email: "priya.singh@mdcare.com", img: "images/femaled5.avif", bio: "Focuses on multiple sclerosis and movement disorders. Heavily involved in clinical research and advanced neural mapping." },
+            { name: "Dr. Rohan Mehta", dept: "Neurology", qual: "MBBS, MS (Neuro Surgery)", exp: "14 Years", email: "rohan.mehta@mdcare.com", img: "images/maled6.avif", bio: "Expert neurosurgeon performing delicate brain and spinal cord surgeries with state-of-the-art robotic assistance." },
+            { name: "Dr. Vikram Das", dept: "Orthopedics", qual: "MBBS, MS (Orthopedics)", exp: "18 Years", email: "vikram.das@mdcare.com", img: "images/maled7.avif", bio: "Leading joint replacement surgeon. Pioneer in performing bilateral knee replacements and sports injury reconstruction." },
+            { name: "Dr. Sana Khan", dept: "Orthopedics", qual: "MBBS, DNB (Ortho)", exp: "9 Years", email: "sana.khan@mdcare.com", img: "images/femaled8.avif", bio: "Specializes in arthroscopy and pediatric orthopedics. Dedicated to correcting congenital bone deformities." },
+            { name: "Dr. Aditya Rao", dept: "Orthopedics", qual: "MBBS, MS", exp: "11 Years", email: "aditya.rao@mdcare.com", img: "images/maled9.avif", bio: "Trauma specialist dealing with complex fractures and spinal injuries originating from severe accidents." },
+            { name: "Dr. Amit Patel", dept: "Pediatrics", qual: "MBBS, MD (Pediatrics)", exp: "16 Years", email: "amit.patel@mdcare.com", img: "images/maled10.avif", bio: "Friendly and highly experienced pediatrician. Dedicated to child immunization, developmental milestones, and neonatal intensive care." },
+            { name: "Dr. Kavita Rao", dept: "Pediatrics", qual: "MBBS, DCH", exp: "13 Years", email: "kavita.rao@mdcare.com", img: "images/femaled11.avif", bio: "Expert in treating pediatric asthma, allergies, and nutritional disorders in growing toddlers." },
+            { name: "Dr. Nidhi Sharma", dept: "Pediatrics", qual: "MBBS, MD", exp: "7 Years", email: "nidhi.sharma@mdcare.com", img: "images/femaled12.avif", bio: "Neonatologist who runs the NICU. Passionate about saving premature babies and ensuring healthy early development." },
+            { name: "Dr. Sameer Reddy", dept: "Oncology", qual: "MBBS, DM (Medical Oncology)", exp: "19 Years", email: "sameer.reddy@mdcare.com", img: "images/maled13.avif", bio: "Pioneer in targeted therapies and immunotherapy for solid tumors. Compassionate doctor focusing on quality of life." },
+            { name: "Dr. Anjali Desai", dept: "Oncology", qual: "MBBS, MS (Surgical Oncology)", exp: "14 Years", email: "anjali.desai@mdcare.com", img: "images/femaled14.avif", bio: "Highly skilled surgical oncologist performing tumor resections, including complex breast and gastrointestinal cancer surgeries." },
+            { name: "Dr. Kabir Jain", dept: "Oncology", qual: "MBBS, MD (Radiation)", exp: "10 Years", email: "kabir.jain@mdcare.com", img: "images/maled15.avif", bio: "Expert in precision radiation oncology, utilizing CyberKnife and advanced linear accelerators." },
+            { name: "Dr. Varun Gupta", dept: "Dermatology", qual: "MBBS, MD (Dermatology)", exp: "12 Years", email: "varun.gupta@mdcare.com", img: "images/maled16.avif", bio: "Specializes in clinical dermatology, treating severe psoriasis, eczema, and complex autoimmune skin diseases." },
+            { name: "Dr. Pooja Iyer", dept: "Dermatology", qual: "MBBS, DDVL", exp: "8 Years", email: "pooja.iyer@mdcare.com", img: "images/femaled17.avif", bio: "Renowned for aesthetic dermatology, laser treatments, and advanced scar reduction therapies." },
+            { name: "Dr. Akash Singh", dept: "Dermatology", qual: "MBBS, MD", exp: "15 Years", email: "akash.singh@mdcare.com", img: "images/maled18.avif", bio: "Expert in dermato-surgery and hair transplant procedures. Leads the vitiligo research department." },
+            { name: "Dr. Tarun Kumar", dept: "Ophthalmology", qual: "MBBS, MS (Ophthalmology)", exp: "17 Years", email: "tarun.kumar@mdcare.com", img: "images/maled19.avif", bio: "Senior eye surgeon specializing in advanced cataract surgeries and premium intraocular lens implants." },
+            { name: "Dr. Sneha Nair", dept: "Ophthalmology", qual: "MBBS, DO", exp: "11 Years", email: "sneha.nair@mdcare.com", img: "images/femaled20.avif", bio: "Specialist in refractive surgeries (LASIK) and managing complex glaucoma conditions." },
+            { name: "Dr. Rahul Bose", dept: "Ophthalmology", qual: "MBBS, MS", exp: "9 Years", email: "rahul.bose@mdcare.com", img: "images/maled21.avif", bio: "Vitreoretinal surgeon dealing with diabetic retinopathy and macular degeneration." },
+            { name: "Dr. Kabir Singh", dept: "Psychiatry", qual: "MBBS, MD (Psychiatry)", exp: "14 Years", email: "kabir.singh@mdcare.com", img: "images/maled22.avif", bio: "Focuses on adult psychiatry, treating severe clinical depression, bipolar disorder, and anxiety management." },
+            { name: "Dr. Aisha Ali", dept: "Psychiatry", qual: "MBBS, DPM", exp: "10 Years", email: "aisha.ali@mdcare.com", img: "images/femaled23.avif", bio: "Child and adolescent psychiatrist. Expert in managing ADHD, autism spectrum, and behavioral issues." },
+            { name: "Dr. Manish Sen", dept: "Psychiatry", qual: "MBBS, MD", exp: "16 Years", email: "manish.sen@mdcare.com", img: "images/maled24.avif", bio: "Addiction specialist running the hospital's renowned de-addiction and rehabilitation clinic." }
         ];
 
         // Render Doctors
-        const grid = document.getElementById('doctors-grid');
+        const slider = document.getElementById('doctors-slider');
         doctorsList.forEach((doc, index) => {
             const card = document.createElement('div');
-            card.className = "bg-slate-50 rounded-2xl overflow-hidden hover:shadow-xl transition cursor-pointer group border border-slate-100";
+            card.className = "flex-none w-[280px] sm:w-[300px] snap-center bg-slate-50 rounded-2xl overflow-hidden hover:shadow-xl transition cursor-pointer group border border-slate-100";
             card.onclick = () => openDoctorProfile(index);
             card.innerHTML = `
                 <div class="relative overflow-hidden h-64">
@@ -697,7 +846,17 @@
                     <p class="text-slate-500 text-sm mt-1 truncate">${doc.qual}</p>
                 </div>
             `;
-            grid.appendChild(card);
+            slider.appendChild(card);
+        });
+
+        // Slider Controls
+        const btnLeft = document.getElementById('slide-left');
+        const btnRight = document.getElementById('slide-right');
+        btnLeft.addEventListener('click', () => {
+            slider.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+        btnRight.addEventListener('click', () => {
+            slider.scrollBy({ left: 320, behavior: 'smooth' });
         });
 
         function openDoctorProfile(idx) {
@@ -732,6 +891,7 @@
             } else {
                 docSelect.disabled = true;
             }
+            checkAvailability();
         });
 
         // Form Avalability Logic
@@ -740,23 +900,78 @@
         const avlMsg = document.getElementById('availability-message');
         const subBtn = document.getElementById('confirm-btn');
 
-        function checkAvailability() {
-            if(!dateSel.value || !timeSel.value) return;
+        async function checkAvailability() {
+            if(!dateSel.value || !docSelect.value) {
+                avlMsg.innerHTML = "";
+                return;
+            }
+
+            // Reset time options
+            Array.from(timeSel.options).forEach(opt => {
+                if(opt.value !== "") {
+                    opt.disabled = false;
+                    opt.textContent = opt.value;
+                }
+            });
+
             const d = new Date(dateSel.value);
-            
             if(d.getDay() === 0) {
                 avlMsg.innerHTML = "<span class='text-red-500'><i class='fa-solid fa-circle-xmark mr-1'></i> Sunday is closed. Please select another date.</span>";
                 subBtn.disabled = true; subBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else if (timeSel.value === '10:00 AM' && d.getDate() % 2 === 0) {
-                avlMsg.innerHTML = "<span class='text-amber-500'><i class='fa-solid fa-circle-xmark mr-1'></i> 10:00 AM is fully booked on this date. Select another time.</span>";
-                subBtn.disabled = true; subBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                timeSel.disabled = true;
+                return;
             } else {
-                avlMsg.innerHTML = "<span class='text-primary'><i class='fa-solid fa-circle-check mr-1'></i> This slot is available!</span>";
-                subBtn.disabled = false; subBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                timeSel.disabled = false;
+            }
+
+            avlMsg.innerHTML = "<span class='text-slate-500'><i class='fa-solid fa-spinner fa-spin mr-1'></i> Checking available slots...</span>";
+            subBtn.disabled = true; subBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+            try {
+                const q = query(collection(db, "appointments"), where("date", "==", dateSel.value));
+                const snapshot = await getDocs(q);
+                
+                const bookedTimes = [];
+                snapshot.forEach(documentSnapshot => {
+                    const data = documentSnapshot.data();
+                    if (data.doctor === docSelect.value && data.status !== 'Cancelled') {
+                        bookedTimes.push(data.time);
+                    }
+                });
+
+                // Disable already booked slots
+                Array.from(timeSel.options).forEach(opt => {
+                    if(bookedTimes.includes(opt.value)) {
+                        opt.disabled = true;
+                        opt.textContent = opt.value + " (Booked)";
+                    }
+                });
+
+                // Reset time selection if it is now booked
+                if(bookedTimes.includes(timeSel.value)) {
+                    timeSel.value = "";
+                }
+
+                if(timeSel.value) {
+                    avlMsg.innerHTML = "<span class='text-primary'><i class='fa-solid fa-circle-check mr-1'></i> This slot is available!</span>";
+                    subBtn.disabled = false; subBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    avlMsg.innerHTML = "<span class='text-slate-500'><i class='fa-solid fa-circle-info mr-1'></i> Please select an available time.</span>";
+                    subBtn.disabled = true; subBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            } catch (error) {
+                console.error("Error checking availability:", error);
+                if(timeSel.value) {
+                    avlMsg.innerHTML = "<span class='text-primary'><i class='fa-solid fa-circle-check mr-1'></i> Ready to book!</span>";
+                    subBtn.disabled = false; subBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    avlMsg.innerHTML = "";
+                }
             }
         }
         dateSel.addEventListener('change', checkAvailability);
         timeSel.addEventListener('change', checkAvailability);
+        docSelect.addEventListener('change', checkAvailability);
 
         const bookingForm = document.getElementById('booking-form');
         bookingForm.addEventListener('submit', async function(e) {
@@ -765,20 +980,36 @@
                 window.openModal('login-modal');
                 return;
             }
+            
+            const originalBtnText = subBtn.innerHTML;
+            subBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processing...';
+            subBtn.disabled = true;
+
             const patientName = e.target.querySelectorAll('input[type="text"]')[0].value;
+            
+            const slotId = `${dateSel.value}_${docSelect.value}_${timeSel.value}`.replace(/[^a-zA-Z0-9]/g, '_');
+            const appointmentRef = doc(db, "appointments", slotId);
+
             try {
-                await addDoc(collection(db, "appointments"), {
-                    userId: auth.currentUser.uid,
-                    patientName: patientName,
-                    email: auth.currentUser.email,
-                    phone: e.target.querySelector('input[type="tel"]').value,
-                    department: deptSelect.value,
-                    doctor: docSelect.value,
-                    date: dateSel.value,
-                    time: timeSel.value,
-                    message: e.target.querySelector('textarea').value,
-                    status: "Pending",
-                    createdAt: serverTimestamp()
+                await runTransaction(db, async (transaction) => {
+                    const docSnap = await transaction.get(appointmentRef);
+                    if (docSnap.exists() && docSnap.data().status !== 'Cancelled') {
+                        throw new Error("SLOT_ALREADY_BOOKED");
+                    }
+                    
+                    transaction.set(appointmentRef, {
+                        userId: auth.currentUser.uid,
+                        patientName: patientName,
+                        email: auth.currentUser.email,
+                        phone: e.target.querySelector('input[type="tel"]').value,
+                        department: deptSelect.value,
+                        doctor: docSelect.value,
+                        date: dateSel.value,
+                        time: timeSel.value,
+                        message: e.target.querySelector('textarea').value,
+                        status: "Pending",
+                        createdAt: serverTimestamp()
+                    });
                 });
                 
                 // Notify Admin via email
@@ -830,12 +1061,21 @@
                     </div>`
                 });
                 
-                alert("Thank you! Your appointment request has been sent to MD Care Hospital front desk.");
+                window.openModal('success-modal');
                 e.target.reset();
                 docSelect.disabled = true;
                 docSelect.innerHTML = '<option value="" disabled selected>Select Doctor</option>';
+                avlMsg.innerHTML = '';
             } catch (error) {
-                alert("Error booking appointment: " + error.message);
+                if (error.message === "SLOT_ALREADY_BOOKED") {
+                    alert("Sorry, this exact slot was just booked by someone else. Please select a different time.");
+                    checkAvailability(); // Refresh the dropdown
+                } else {
+                    alert("Error booking appointment: " + error.message);
+                }
+            } finally {
+                subBtn.innerHTML = originalBtnText;
+                subBtn.disabled = false;
             }
         });
 
@@ -862,6 +1102,88 @@
         }, 5000);
 
         // Init
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        document.getElementById('date-select').setAttribute('min', `${year}-${month}-${day}`);
+
+        // Populate 45 Reviews Dynamically
+        const reviewsContainer = document.getElementById('reviews-container');
+        if (reviewsContainer) {
+            const reviews = [
+                { name: "Rajesh Kumar", rating: 5, text: "The cardiology department is top-notch. Dr. Rajat Sharma saved my father's life. The hospital staff is extremely polite and the facilities are world-class." },
+                { name: "Simran Kaur", rating: 4.5, text: "Very clean wards and timely service. The pediatric unit handled my child's case with so much care. Highly recommend MD Care to everyone in Jalandhar." },
+                { name: "Amit Verma", rating: 5, text: "The booking process was seamless and the wait times were minimal. Excellent orthopedics team. Helped me recover fully from a sports injury." }
+            ];
+
+            const extraNames = ["Priya Sharma", "Rahul Singh", "Neha Gupta", "Vikram Malhotra", "Sneha Desai", "Anil Kapoor", "Kavita Reddy", "Sanjay Patel", "Pooja Jain", "Arjun Bose", "Anjali Nair", "Rohan Rao", "Ritu Das", "Vivek Iyer", "Nisha Sen", "Manish Shah", "Kiran Yadav", "Deepak Chopra", "Aarti Tiwari", "Karan Johar", "Roshni Agarwal", "Tarun Banerjee", "Kriti Sanon", "Manoj Bajpayee", "Sunita Williams", "Rajiv Bhatia", "Smriti Irani", "Ramesh Tendulkar", "Geeta Phogat", "Suresh Raina", "Meera Rajput", "Nitin Gadkari", "Preeti Zinta", "Alok Nath", "Shilpa Shetty", "Gaurav Khanna", "Divya Dutta", "Harish Salve", "Ravi Teja", "Kapil Sharma", "Shreya Ghoshal", "Anushka Sharma"];
+            
+            const extraTexts = [
+                "Outstanding medical care and very compassionate nurses. I felt very well taken care of.",
+                "State-of-the-art facilities and experienced doctors. The diagnosis was quick and accurate.",
+                "I visited for a routine checkup and was impressed by the efficiency of the staff.",
+                "Emergency services are truly 24/7 and very responsive. The doctors act fast.",
+                "The oncology department provided excellent support and advanced treatment options.",
+                "Very reasonable pricing for the quality of care provided. Transparent billing.",
+                "The dermatology department helped me cure a chronic skin issue I've had for years.",
+                "Excellent maternity care. The nurses were so helpful and the pediatricians are wonderful.",
+                "The doctors here take the time to listen to your concerns. You never feel rushed.",
+                "Highly skilled surgeons. My knee replacement surgery went flawlessly.",
+                "The neurology team is fantastic. They accurately diagnosed my migraines.",
+                "Good hospital with modern infrastructure. The waiting areas are comfortable.",
+                "Best hospital in Jalandhar. The staff goes above and beyond to help patients.",
+                "I'm very satisfied with the ophthalmology department. My cataract surgery was painless.",
+                "Great psychiatric counseling. The doctors maintain strict confidentiality and are supportive.",
+                "The rehabilitation center is excellent. They helped my father walk again.",
+                "Everything from admission to discharge was perfectly organized.",
+                "I highly recommend the ENT specialists here. Very thorough checkups."
+            ];
+
+            extraNames.forEach((name, i) => {
+                reviews.push({ name: name, rating: (Math.random() > 0.2 ? 5 : 4.5), text: extraTexts[i % extraTexts.length] });
+            });
+
+            let currentReviewIndex = 0;
+            const loadMoreBtn = document.getElementById('load-more-reviews-btn');
+
+            window.loadMoreReviews = function() {
+                const end = Math.min(currentReviewIndex + 5, reviews.length);
+                let htmlStr = '';
+                
+                for (let i = currentReviewIndex; i < end; i++) {
+                    const review = reviews[i];
+                    let starsHtml = '';
+                    const fullStars = Math.floor(review.rating);
+                    const halfStar = review.rating % 1 !== 0;
+                    for(let j=0; j<fullStars; j++) starsHtml += '<i class="fa-solid fa-star"></i>';
+                    if(halfStar) starsHtml += '<i class="fa-solid fa-star-half-stroke"></i>';
+                    
+                    htmlStr += `
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-100">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-bold text-secondary">${review.name}</h4>
+                                <div class="text-yellow-400 text-xs">${starsHtml}</div>
+                            </div>
+                            <p class="text-sm text-slate-600">"${review.text}"</p>
+                        </div>
+                    `;
+                }
+                
+                reviewsContainer.innerHTML += htmlStr;
+                currentReviewIndex = end;
+
+                if (currentReviewIndex >= reviews.length) {
+                    loadMoreBtn.classList.add('hidden');
+                } else {
+                    loadMoreBtn.classList.remove('hidden');
+                }
+            };
+
+            // Load initial 5 reviews
+            window.loadMoreReviews();
+        }
+
         updateAuthUI();
     </script>
     <script src="chatbot.js"></script>
