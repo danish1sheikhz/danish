@@ -44,13 +44,13 @@
     <!-- Navigtion -->
     <nav class="bg-white shadow-md fixed w-full z-50 top-0 left-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
+            <div class="flex justify-between items-center h-20 gap-4">
                 <a href="index.html" class="flex-shrink-0 flex items-center gap-2 hover:opacity-80 transition cursor-pointer">
                     <i class="fa-solid fa-house-medical text-3xl text-primary"></i>
                     <span class="font-bold text-2xl text-secondary">MD Care <span class="text-primary">Hospital</span></span>
                 </a>
                 <!-- Mn Menu -->
-                <div class="hidden md:flex space-x-8 items-center">
+                <div class="hidden md:flex space-x-4 lg:space-x-8 items-center">
                     <a href="#home" class="text-primary transition font-bold">Home</a>
                     <a href="about.html" class="text-slate-600 hover:text-primary transition font-medium">About</a>
                     <a href="departments.html" class="text-slate-600 hover:text-primary transition font-medium">Departments</a>
@@ -359,6 +359,9 @@
                     <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
                     <input type="password" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none" placeholder="••••••••">
                 </div>
+                <div class="text-right mt-1">
+                    <a href="#" onclick="switchModal('login-modal', 'forgot-password-modal')" class="text-xs text-primary font-bold hover:underline">Forgot Password?</a>
+                </div>
                 <button type="submit" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-teal-700 transition shadow-md mt-4">Login</button>
                 <p class="text-center text-sm text-slate-600 mt-4">Don't have an account? <a href="#" onclick="switchModal('login-modal', 'register-modal')" class="text-primary font-bold hover:underline">Register</a></p>
             </form>
@@ -388,6 +391,26 @@
                 </div>
                 <button type="submit" class="w-full bg-secondary text-white font-bold py-3 rounded-lg hover:bg-slate-800 transition shadow-md mt-4">Register</button>
                 <p class="text-center text-sm text-slate-600 mt-4">Already have an account? <a href="#" onclick="switchModal('register-modal', 'login-modal')" class="text-primary font-bold hover:underline">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-password-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center modal-backdrop transition-opacity">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative mx-4">
+            <button onclick="closeModal('forgot-password-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-secondary text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-key text-4xl text-primary mb-2"></i>
+                <h2 class="text-2xl font-bold text-secondary">Reset Password</h2>
+                <p class="text-slate-500 text-sm">Enter your email to receive a reset link</p>
+            </div>
+            <form id="forgot-password-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                    <input type="email" id="reset-email" required class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary outline-none" placeholder="user@example.com">
+                </div>
+                <button type="submit" id="reset-btn" class="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-teal-700 transition shadow-md mt-4">Send Reset Link</button>
+                <p class="text-center text-sm text-slate-600 mt-4">Remembered? <a href="#" onclick="switchModal('forgot-password-modal', 'login-modal')" class="text-primary font-bold hover:underline">Back to Login</a></p>
             </form>
         </div>
     </div>
@@ -643,7 +666,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile, sendEmailVerification, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, query, where, getDocs, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -686,6 +709,42 @@
             document.getElementById(closeId).classList.add('hidden');
             document.getElementById(openId).classList.remove('hidden');
         }
+
+        // Beautiful Toast Notification System
+        window.showToast = function(title, message, type = 'success') {
+            let container = document.getElementById('toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'toast-container';
+                container.className = 'fixed top-24 right-4 z-[200] flex flex-col gap-3 pointer-events-none';
+                document.body.appendChild(container);
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `min-w-[300px] max-w-sm bg-white border-l-4 ${type === 'success' ? 'border-teal-500' : 'border-red-500'} rounded-xl shadow-2xl p-4 flex items-start gap-3 transform transition-all duration-300 translate-x-full opacity-0 pointer-events-auto`;
+            
+            const icon = `<div class="w-10 h-10 rounded-full ${type === 'success' ? 'bg-teal-50 text-teal-500' : 'bg-red-50 text-red-500'} flex items-center justify-center flex-shrink-0 text-lg">
+                <i class="fa-solid ${type === 'success' ? 'fa-check' : 'fa-xmark'}"></i>
+            </div>`;
+                
+            toast.innerHTML = `
+                ${icon}
+                <div class="flex-grow pt-0.5">
+                    <h4 class="font-bold text-slate-800 text-sm">${title}</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">${message}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-times"></i></button>
+            `;
+            
+            container.appendChild(toast);
+            
+            requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0'));
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 6000);
+        };
 
         window.handleAppointmentClick = function() {
             if(!isLoggedIn) {
@@ -731,25 +790,46 @@
 
         document.getElementById('login-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging in...';
+            btn.disabled = true;
+
             const email = e.target.querySelector('input[type="email"]').value;
             const pass = e.target.querySelector('input[type="password"]').value;
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
+                const userCred = await signInWithEmailAndPassword(auth, email, pass);
+                if (!userCred.user.emailVerified) {
+                    window.showToast("Verification Required", "Your email address is not verified yet. Please check your inbox.", "error");
+                } else {
+                    window.showToast("Login Successful", "Welcome back!", "success");
+                }
                 window.closeModal('login-modal');
                 window.location.hash = 'appointment';
             } catch (err) {
-                alert("Login Failed: " + err.message);
+                window.showToast("Login Failed", err.message, "error");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         });
 
         document.getElementById('register-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering...';
+            btn.disabled = true;
+
             const name = e.target.querySelectorAll('input[type="text"]')[0].value;
             const email = e.target.querySelector('input[type="email"]').value;
             const pass = e.target.querySelector('input[type="password"]').value;
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
                 await updateProfile(userCredential.user, { displayName: name });
+                
+                // Send Verification Email
+                await sendEmailVerification(userCredential.user);
                 
                 // Store additional user data in the "users" Firestore collection
                 await setDoc(doc(db, "users", userCredential.user.uid), {
@@ -793,9 +873,35 @@
                 });
 
                 window.closeModal('register-modal');
+                window.showToast("Account Created", "Registration successful! A verification link has been sent. Please check your Inbox and Spam folders.", "success");
                 window.location.hash = 'appointment';
             } catch (err) {
-                alert("Registration Failed: " + err.message);
+                window.showToast("Registration Failed", err.message, "error");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Forgot Password Logic
+        document.getElementById('forgot-password-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('reset-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+
+            const email = document.getElementById('reset-email').value;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                window.showToast("Reset Link Sent", "If an account exists with this email, a reset link has been sent. Please check your Inbox and Spam folders.", "success");
+                window.switchModal('forgot-password-modal', 'login-modal');
+                e.target.reset();
+            } catch (err) {
+                window.showToast("Reset Failed", err.message, "error");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             }
         });
 
@@ -1068,10 +1174,10 @@
                 avlMsg.innerHTML = '';
             } catch (error) {
                 if (error.message === "SLOT_ALREADY_BOOKED") {
-                    alert("Sorry, this exact slot was just booked by someone else. Please select a different time.");
+                    window.showToast("Slot Unavailable", "Sorry, this exact slot was just booked by someone else. Please select a different time.", "error");
                     checkAvailability(); // Refresh the dropdown
                 } else {
-                    alert("Error booking appointment: " + error.message);
+                    window.showToast("Booking Failed", error.message, "error");
                 }
             } finally {
                 subBtn.innerHTML = originalBtnText;
